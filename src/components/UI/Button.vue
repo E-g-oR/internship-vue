@@ -1,11 +1,12 @@
 <template>
-  <a class="waves-effect waves-light deep-purple accent-3 btn"
-    ><i class="material-icons left">favorite_border</i>Add to favorite</a
-  >
+  <a class="waves-effect waves-dark" :class="color + ' ' + type"
+    ><i class="material-icons left">{{ icon }} </i>{{ text }}
+  </a>
 </template>
 
 <script>
 export default {
+  props: ["text", "icon", "color", "type"],
   name: "Button",
 };
 </script>

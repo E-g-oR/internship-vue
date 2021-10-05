@@ -6,24 +6,22 @@
     <div class="all-posts" v-if="allPosts">
       <post v-for="post in allPosts" :post="post" :key="post.id" />
     </div>
+    <Preloader v-else />
   </div>
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 import Post from "./UI/Post.vue";
+import Preloader from "./UI/Preloader.vue";
 export default {
-  data() {
-    return {
-      allPosts: null,
-    };
-  },
-  components: { Post },
   name: "all-cards-container",
-  mounted() {
-    fetch("https://jsonplaceholder.typicode.com/posts")
-      .then((resp) => resp.json())
-      .then((data) => (this.allPosts = data));
+  computed: mapGetters(["allPosts"]),
+  async mounted() {
+    this.$store.dispatch("fetchPosts");
   },
+  methods: {},
+  components: { Post, Preloader },
 };
 </script>
 
@@ -38,5 +36,10 @@ export default {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   grid-column-gap: 1.5rem;
+}
+@media screen and (max-width: 550px) {
+  .all-cards-container .all-posts {
+    grid-template-columns: 1fr;
+  }
 }
 </style>
