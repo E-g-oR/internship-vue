@@ -8,7 +8,7 @@
     <favorite-cards-container />
     <Button
       icon="add"
-      type="fixed-action-btn btn-floating btn-large"
+      look="fixed-action-btn btn-floating btn-large"
       color="deep-purple accent-3"
       @click.prevent="isModalOpen = true"
     />

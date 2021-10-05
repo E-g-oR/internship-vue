@@ -1,44 +1,88 @@
 <template>
   <div class="modal-backdrop" :class="{ open: isModalOpen }">
-    <div class="new-post-modal card grey lighten-5 z-depth-5">
+    <form
+      class="new-post-modal card grey lighten-5 z-depth-5"
+      @submit.prevent="submitForm"
+    >
       <div class="card-content black-text">
         <span class="post__title card-title">Create new post</span>
         <div class="row"></div>
         <form>
           <div class="input-field">
-            <input id="post-title" type="text" />
+            <input v-model="title" id="post-title" type="text" />
             <label class="active" for="post-title">Post title</label>
           </div>
           <div class="input-field">
-            <textarea id="post-body" class="materialize-textarea"></textarea>
+            <textarea
+              v-model="body"
+              id="post-body"
+              class="materialize-textarea"
+            ></textarea>
             <label for="post-body">Post body</label>
           </div>
         </form>
       </div>
       <div class="card-action">
-        <Button text="Confirm" color="deep-purple accent-3" type="btn" />
+        <Button
+          type="submit"
+          text="Confirm"
+          color="deep-purple accent-3"
+          look="btn"
+        />
         <Button
           @click="closeForm"
           text="Cancel"
           color="black-text"
-          type="btn-flat"
+          look="btn-flat"
         />
       </div>
-    </div>
+    </form>
   </div>
 </template>
 
 <script>
+import { mapMutations } from "vuex";
 import Button from "./UI/Button.vue";
 export default {
-  props: ["isModalOpen"],
-  components: { Button },
   name: "PopupForm",
+  props: ["isModalOpen"],
+  data() {
+    return {
+      title: "",
+      body: "",
+    };
+  },
   methods: {
+    ...mapMutations(["addNewPost"]),
     closeForm() {
       this.$emit("closeForm");
     },
+    createPost(title, body) {
+      return {
+        title: title,
+        body: body,
+        userId: 0,
+        isFavorite: false,
+        id: Date.now(),
+      };
+    },
+    validateForm(title, body) {
+      if (title.trim() !== "" && body.trim() !== "") {
+        return true;
+      }
+      return false;
+    },
+    submitForm() {
+      const title = this.title;
+      const body = this.body;
+      if (this.validateForm(title, body)) {
+        const newPost = this.createPost(title, body);
+        this.addNewPost(newPost);
+        this.closeForm();
+      }
+    },
   },
+  components: { Button },
 };
 </script>
 
@@ -57,8 +101,6 @@ export default {
   justify-content: center;
   background-color: rgba(0, 0, 0, 0.85);
   transition: 0.2s;
-  /* opacity: 0;
-  visibility: hidden; */
 }
 .modal-backdrop.open {
   opacity: 1;
@@ -66,14 +108,6 @@ export default {
 }
 .new-post-modal .btn {
   margin-right: 2rem;
-}
-
-/* .new-post-modal {
-  display: none;
-} */
-
-.new-post-modal.open {
-  display: block;
 }
 
 .new-post-modal .input-field input[type="text"]:focus + label {

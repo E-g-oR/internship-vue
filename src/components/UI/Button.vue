@@ -1,12 +1,16 @@
 <template>
-  <a class="waves-effect waves-dark" :class="color + ' ' + type"
-    ><i class="material-icons left">{{ icon }} </i>{{ text }}
-  </a>
+  <button
+    class="waves-effect waves-dark"
+    :class="color + ' ' + look"
+    :type="type"
+  >
+    <i v-if="icon" class="material-icons left">{{ icon }} </i>{{ text }}
+  </button>
 </template>
 
 <script>
 export default {
-  props: ["text", "icon", "color", "type"],
+  props: ["text", "icon", "color", "look", "type"],
   name: "Button",
 };
 </script>
