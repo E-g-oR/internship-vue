@@ -3,7 +3,10 @@
     class="post card grey lighten-5"
     :class="{ favorite: post.isFavorite, added: !post.userId }"
   >
-    <div class="card-content black-text">
+    <div
+      class="card-content waves-effect waves-dark black-text"
+      @click="$emit('postClick', post)"
+    >
       <span class="post__title card-title">{{ post.title }}</span>
       <p class="post__body">{{ post.body }}</p>
     </div>
@@ -23,6 +26,7 @@ import Button from "./Button.vue";
 export default {
   name: "Post",
   props: ["post"],
+  emits: ["postClick"],
   methods: {
     addToFavorites() {
       this.$store.dispatch("addToFavorites", this.post.id);
@@ -33,6 +37,13 @@ export default {
 </script>
 
 <style>
+.card {
+  display: flex;
+  flex-direction: column;
+}
+.card-content {
+  flex: 1 1 auto;
+}
 .post.favorite {
   background-color: #fff59d !important;
 }

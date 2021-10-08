@@ -4,7 +4,12 @@
     aria-label="all cards container"
   >
     <div class="all-posts" v-if="allPosts">
-      <post v-for="post in allPosts" :post="post" :key="post.id" />
+      <post
+        v-for="post in allPosts"
+        :post="post"
+        :key="post.id"
+        @postClick="logPost"
+      />
     </div>
     <Preloader v-else />
   </div>
@@ -20,7 +25,11 @@ export default {
   async mounted() {
     this.$store.dispatch("fetchPosts");
   },
-  methods: {},
+  methods: {
+    logPost(post) {
+      this.$emit("postClicked", post);
+    },
+  },
   components: { Post, Preloader },
 };
 </script>

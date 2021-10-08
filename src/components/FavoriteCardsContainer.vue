@@ -4,7 +4,12 @@
     aria-label="favorite cards container"
   >
     <div v-if="favoritePosts" class="favorites-wrapper">
-      <post v-for="post in favoritePosts" :key="post.id" :post="post" />
+      <post
+        v-for="post in favoritePosts"
+        :key="post.id"
+        :post="post"
+        @postClick="logPost"
+      />
     </div>
   </div>
 </template>
@@ -16,6 +21,11 @@ export default {
   components: { Post },
   name: "favorite-cards-container",
   computed: mapGetters(["favoritePosts"]),
+  methods: {
+    logPost(post) {
+      this.$emit("postClicked", post);
+    },
+  },
 };
 </script>
 

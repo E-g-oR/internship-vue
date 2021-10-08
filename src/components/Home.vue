@@ -1,11 +1,11 @@
 <template>
-  <div class="home">
+  <div class="home" @postClick="alert('hey')">
     <transition name="fade">
       <popup-form v-if="isModalOpen" @closeForm="closePopupForm" />
     </transition>
-    <all-cards-container />
-    <card-details />
-    <favorite-cards-container />
+    <all-cards-container @postClicked="showPostDetails" />
+    <card-details :card="postDetails" @clearDetails="postDetails = null" />
+    <favorite-cards-container @postClicked="showPostDetails" />
     <Button
       icon="add"
       look="fixed-action-btn btn-floating btn-large"
@@ -24,6 +24,7 @@ import Button from "./UI/Button.vue";
 export default {
   data: () => ({
     isModalOpen: false,
+    postDetails: null,
   }),
   name: "home",
   components: {
@@ -36,6 +37,9 @@ export default {
   methods: {
     closePopupForm() {
       this.isModalOpen = false;
+    },
+    showPostDetails(post) {
+      this.postDetails = post;
     },
   },
 };
